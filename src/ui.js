@@ -5,11 +5,16 @@
 import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/react/shallow';
 import { InputNode } from './nodes/inputNode';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
+import { NoteNode } from './nodes/noteNode';
+import { ApiNode } from './nodes/apiNode';
+import { FilterNode } from './nodes/filterNode';
+import { TimerNode } from './nodes/timerNode';
+import { MathNode } from './nodes/mathNode';
 
 import 'reactflow/dist/style.css';
 
@@ -20,35 +25,24 @@ const nodeTypes = {
   llm: LLMNode,
   customOutput: OutputNode,
   text: TextNode,
+  note: NoteNode,
+  api: ApiNode,
+  filter: FilterNode,
+  timer: TimerNode,
+  math: MathNode,
 };
-
-const selector = (state) => ({
-  nodes: state.nodes,
-  edges: state.edges,
-  getNodeID: state.getNodeID,
-  addNode: state.addNode,
-  onNodesChange: state.onNodesChange,
-  onEdgesChange: state.onEdgesChange,
-  onConnect: state.onConnect,
-});
 
 export const PipelineUI = () => {
     const reactFlowWrapper = useRef(null);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
-    const {
-      nodes,
-      edges,
-      getNodeID,
-      addNode,
-      onNodesChange,
-      onEdgesChange,
-      onConnect
-    } = useStore(selector, shallow);
+    const nodes = useStore(useShallow((state) => state.nodes));
+    const edges = useStore(useShallow((state) => state.edges));
+    const addNodeByType = useStore((state) => state.addNodeByType);
+    const onNodesChange = useStore((state) => state.onNodesChange);
+    const onEdgesChange = useStore((state) => state.onEdgesChange);
+    const onConnect = useStore((state) => state.onConnect);
 
-    const getInitNodeData = (nodeID, type) => {
-      let nodeData = { id: nodeID, nodeType: `${type}` };
-      return nodeData;
-    }
+
 
     const onDrop = useCallback(
         (event) => {
@@ -59,28 +53,17 @@ export const PipelineUI = () => {
             const appData = JSON.parse(event.dataTransfer.getData('application/reactflow'));
             const type = appData?.nodeType;
       
-            // check if the dropped element is valid
-            if (typeof type === 'undefined' || !type) {
-              return;
-            }
+            if (!type) return;
       
             const position = reactFlowInstance.project({
               x: event.clientX - reactFlowBounds.left,
               y: event.clientY - reactFlowBounds.top,
             });
-
-            const nodeID = getNodeID(type);
-            const newNode = {
-              id: nodeID,
-              type,
-              position,
-              data: getInitNodeData(nodeID, type),
-            };
-      
-            addNode(newNode);
+ 
+            addNodeByType(type, position);
           }
         },
-        [reactFlowInstance]
+        [reactFlowInstance, addNodeByType]
     );
 
     const onDragOver = useCallback((event) => {
@@ -89,8 +72,7 @@ export const PipelineUI = () => {
     }, []);
 
     return (
-        <>
-        <div ref={reactFlowWrapper} style={{width: '100wv', height: '70vh'}}>
+        <div ref={reactFlowWrapper} className="canvas-wrapper">
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -105,11 +87,13 @@ export const PipelineUI = () => {
                 snapGrid={[gridSize, gridSize]}
                 connectionLineType='smoothstep'
             >
-                <Background color="#aaa" gap={gridSize} />
+                <Background color="#2a2d3a" gap={gridSize} />
                 <Controls />
-                <MiniMap />
+                <MiniMap 
+                  nodeColor="#7c5cfc"
+                  maskColor="rgba(15, 17, 23, 0.8)"
+                />
             </ReactFlow>
         </div>
-        </>
     )
 }
