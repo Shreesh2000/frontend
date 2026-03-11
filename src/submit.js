@@ -10,7 +10,7 @@ const selector = (state) => ({
 });
 
 export const SubmitButton = () => {
-    const { nodes, edges, apiKeys, setResults } = useStore(useShallow(selector));
+    const { nodes, edges, setResults } = useStore(useShallow(selector));
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isRunning, setIsRunning] = useState(false);
@@ -38,7 +38,7 @@ export const SubmitButton = () => {
           const response = await fetch('http://localhost:8000/pipelines/run', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nodes, edges, apiKeys }),
+            body: JSON.stringify({ nodes, edges }),
           });
           if (!response.ok) {
             const errData = await response.json();
