@@ -169,49 +169,80 @@ body {
   stroke: var(--accent) !important;
 }
 
-/* ── Submit Section ────────────────────────────── */
-.submit-section {
+/* ── Button Controls Layout ────────────────────── */
+.button-controls {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 20px;
+  gap: 12px;
+  padding: 14px 24px;
   background: var(--bg-glass);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--border-subtle);
+  justify-content: center;
+}
+
+.action-btn {
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.run-btn {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.run-btn:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
 }
 
 .submit-btn {
   background: var(--accent-gradient);
   color: #fff;
-  font-family: var(--font-family);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px 36px;
-  border: none;
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-  letter-spacing: 0.3px;
 }
 
-.submit-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-glow), var(--shadow-md);
-  filter: brightness(1.1);
-}
-
-.submit-btn:active {
-  transform: translateY(0);
-  filter: brightness(0.95);
-}
-
-.submit-btn:disabled {
+.action-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+}
+
+/* ── Node Results ──────────────────────────────── */
+.node-result {
+  margin-top: 10px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+  font-size: 12px;
+}
+
+.node-result-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.node-result-value {
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
 }
 
 /* ── Alert Modal Overlay ───────────────────────── */

@@ -51,6 +51,7 @@ export const useStore = create((set, get) => ({
         edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, get().edges),
       });
     },
+    results: {},
     updateNodeField: (nodeId, fieldName, fieldValue) => {
       set({
         nodes: get().nodes.map((node) => {
@@ -63,5 +64,8 @@ export const useStore = create((set, get) => ({
           return node;
         }),
       });
+    },
+    setResults: (results) => {
+        set({ results });
     },
   }));

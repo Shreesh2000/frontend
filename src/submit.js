@@ -10,9 +10,10 @@ const selector = (state) => ({
 });
 
 export const SubmitButton = () => {
-    const { nodes, edges } = useStore(useShallow(selector));
+    const { nodes, edges, setResults } = useStore(useShallow(selector));
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
 
     const handleSubmit = async () => {
       setLoading(true);
@@ -31,11 +32,41 @@ export const SubmitButton = () => {
       }
     };
 
+    const handleRun = async () => {
+        setIsRunning(true);
+        try {
+          const response = await fetch('http://localhost:8000/pipelines/run', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nodes, edges }),
+          });
+          if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.detail || 'Execution failed');
+          }
+          const data = await response.json();
+          setResults(data); // Store results in global state for nodes to display
+          alert('Pipeline execution complete! Check output nodes for results.');
+        } catch (err) {
+          alert('Error running pipeline: ' + err.message);
+        } finally {
+          setIsRunning(false);
+        }
+      };
+
     return (
         <>
-          <div className="submit-section">
+          <div className="button-controls">
               <button
-                className="submit-btn"
+                className="action-btn run-btn"
+                type="button"
+                onClick={handleRun}
+                disabled={isRunning}
+              >
+                {isRunning ? 'Running…' : '▶ Run Preview'}
+              </button>
+              <button
+                className="action-btn submit-btn"
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
