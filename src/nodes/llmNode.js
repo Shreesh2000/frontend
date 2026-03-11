@@ -6,6 +6,7 @@ import { BaseNode } from './BaseNode';
 
 export const LLMNode = ({ id, data }) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
+  const results = useStore((state) => state.results);
   const [model, setModel] = useState(data?.model || 'gpt-4o');
   const [temperature, setTemperature] = useState(data?.temperature || 0.7);
 
@@ -51,9 +52,12 @@ export const LLMNode = ({ id, data }) => {
           onChange={handleTempChange} 
         />
       </div>
-      <span className="node-info">
-        Large Language Model node. Connect a system prompt and user prompt to generate a response.
-      </span>
+      {results[id] && (
+        <div className="node-result">
+          <span className="node-result-label">Response</span>
+          <div className="node-result-value">{results[id]}</div>
+        </div>
+      )}
     </BaseNode>
   );
 };
