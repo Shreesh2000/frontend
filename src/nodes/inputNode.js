@@ -44,12 +44,6 @@ export const InputNode = ({ id, data }) => {
           <option value="File">File</option>
         </select>
       </div>
-      {results[id] && (
-        <div className="node-result">
-          <span className="node-result-label">Current Value</span>
-          <div className="node-result-value">{results[id]}</div>
-        </div>
-      )}
     </BaseNode>
   );
 };

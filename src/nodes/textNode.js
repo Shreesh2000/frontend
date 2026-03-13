@@ -9,7 +9,6 @@ const VAR_REGEX = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
 
 export const TextNode = ({ id, data }) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
-  const results = useStore((state) => state.results);
   const [currText, setCurrText] = useState(data?.text || '{{input}}');
   const textareaRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 220, height: 'auto' });
@@ -71,12 +70,6 @@ export const TextNode = ({ id, data }) => {
           placeholder='Type text or use {{ variable }} to create inputs...'
         />
       </div>
-      {results[id] && (
-        <div className="node-result">
-          <span className="node-result-label">Processed Text</span>
-          <div className="node-result-value">{results[id]}</div>
-        </div>
-      )}
     </BaseNode>
   );
 };

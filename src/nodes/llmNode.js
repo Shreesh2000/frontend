@@ -6,7 +6,6 @@ import { BaseNode } from './BaseNode';
 
 export const LLMNode = ({ id, data }) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
-  const results = useStore((state) => state.results);
   const [model, setModel] = useState(data?.model || 'gpt-4o');
   const [temperature, setTemperature] = useState(data?.temperature || 0.7);
 
@@ -52,12 +51,6 @@ export const LLMNode = ({ id, data }) => {
           onChange={handleTempChange} 
         />
       </div>
-      {results[id] && (
-        <div className="node-result">
-          <span className="node-result-label">Response</span>
-          <div className="node-result-value">{results[id]}</div>
-        </div>
-      )}
     </BaseNode>
   );
 };

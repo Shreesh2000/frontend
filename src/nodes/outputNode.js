@@ -6,7 +6,6 @@ import { useStore } from '../store';
 
 export const OutputNode = ({ id, data }) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
-  const results = useStore((state) => state.results);
   const [currName, setCurrName] = useState(data?.outputName || id.replace('customOutput-', 'output_'));
   const [outputType, setOutputType] = useState(data?.outputType || 'Text');
 
@@ -44,12 +43,6 @@ export const OutputNode = ({ id, data }) => {
           <option value="File">File</option>
         </select>
       </div>
-      {results[id] && (
-        <div className="node-result">
-          <span className="node-result-label">Result</span>
-          <div className="node-result-value">{results[id]}</div>
-        </div>
-      )}
     </BaseNode>
   );
 };
