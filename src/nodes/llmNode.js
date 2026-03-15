@@ -33,7 +33,7 @@ export const LLMNode = ({ id, data }) => {
       outputs={[{ id: 'response' }]}
     >
       <div className="node-field">
-        <label>Model</label>
+        <label style={{ marginLeft: '20%' }}>Model</label>
         <select value={model} onChange={handleModelChange}>
           <option value="gpt-4o">GPT-4o</option>
           <option value="gpt-4-turbo">GPT-4 Turbo</option>
@@ -41,14 +41,14 @@ export const LLMNode = ({ id, data }) => {
         </select>
       </div>
       <div className="node-field">
-        <label>Temperature ({temperature})</label>
-        <input 
-          type="range" 
-          min="0" 
-          max="1" 
-          step="0.1" 
-          value={temperature} 
-          onChange={handleTempChange} 
+        <label style={{ marginLeft: '20%' }}>Temperature ({temperature})</label>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={temperature}
+          onChange={handleTempChange}
         />
       </div>
     </BaseNode>

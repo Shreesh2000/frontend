@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
-from backend.services.pipeline_service import PipelineService
+from services.pipeline_service import PipelineService
 
 app = FastAPI()
 
